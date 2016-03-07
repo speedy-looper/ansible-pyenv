@@ -1,0 +1,6 @@
+python_versions:
+  - 2.7.10
+  - 3.4.1
+
+python_global:
+  - 2.7.10

@@ -15,5 +15,6 @@
 - name: update pyenv
   command: pyenv update
 
-# - name: install pythons
-#   command: pyenv install
+- name: install python versions
+  command: pyenv install {{ item }}
+  with_items: "{{ python_versions }}"
