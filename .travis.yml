@@ -10,6 +10,7 @@ before_install:
 install:
   - "pip install -r req.txt"
   - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+  - ansible-galaxy install -r req_roles.yml -p ../ --force
 
 script:
   - ansible-playbook -i tests/hosts tests/main.yml --syntax-check

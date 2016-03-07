@@ -1,0 +1,4 @@
+---
+- src: https://github.com/speedy-looper/ansible-pyenv
+  version: master
+  path: ../
