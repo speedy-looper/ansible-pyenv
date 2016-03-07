@@ -3,3 +3,17 @@
   local_action:
     command: mktemp -d "{{ lookup('env', 'TMPDIR') | default('/tmp', true) }}/ansible"
 
+- name: download pyenv-install.sh
+  get_url:
+    url=https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer
+    dest="{{ lookup('env', 'TMPDIR') | default('/tmp', true) }}/ansible/pyenv.sh"
+    mode=0744
+
+- name: run the installer
+  script: /tmp/ansible/pyenv.sh
+
+- name: update pyenv
+  command: pyenv update
+
+# - name: install pythons
+#   command: pyenv install

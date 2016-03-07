@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - speed-looper/ansible-pyenv
+    - speedy-looper/ansible-pyenv

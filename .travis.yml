@@ -9,7 +9,7 @@ before_install:
 
 install:
   - "pip install -r req.txt"
-  - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
+  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
 
 script:
   - ansible-playbook -i tests/hosts tests/main.yml --syntax-check
