@@ -1,6 +1,6 @@
 ---
 - name: create a local temp directory
-  command: mktemp -d "{{ lookup('env', 'TMPDIR') | default('/tmp', true) }}/ansible"
+  command: mktemp -d "{{ lookup('env', 'TMPDIR') | default('/tmp', true) }}/ansible.XXX"
 
 - name: download pyenv-install.sh
   get_url:
@@ -16,7 +16,7 @@
 
 - name: install python versions
   command: pyenv install {{ item }}
-  with_items: "{{ python_versions }}"
+  with_items: "{{ python.versions }}"
 
 - name: set global python
-  command: pyenv global {{ python_global }}
+  command: pyenv global {{ python.default }}

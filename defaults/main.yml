@@ -1,8 +1,7 @@
 ---
-# defaults file for .
-python_versions:
-  - 2.7.10
-  - 3.4.1
-
-python_global:
-  - 2.7.10
+python:
+  default:
+    - 2.7.10
+  versions:
+    - 2.7.10
+    - 3.4.1
