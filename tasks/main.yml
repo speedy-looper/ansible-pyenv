@@ -1,15 +1,16 @@
 ---
 - name: create a local temp directory
   command: mktemp -d "{{ lookup('env', 'TMPDIR') | default('/tmp', true) }}/ansible.XXX"
+  register: mktemp
 
 - name: download pyenv-install.sh
   get_url:
     url=https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer
-    dest="{{ lookup('env', 'TMPDIR') | default('/tmp', true) }}/ansible/pyenv.sh"
+    dest="{{ mktemp.stdout }}/pyenv.sh"
     mode=0744
 
 - name: run the installer
-  script: /tmp/ansible/pyenv.sh
+  script: "{{ mktemp.stdout }}/pyenv.sh"
 
 - name: update pyenv
   command: pyenv update
