@@ -10,22 +10,22 @@ addons:
       - python-pip
 
 install:
-  - pip install ansible
+  - pip install ansible==2.1.0
   - ansible --version
   - printf '[defaults]\nroles_path=../' >ansible.cfg
   - sudo useradd test -m -d /home/test -s /bin/bash
   - sudo chgrp ```id -gn``` /home/test
   - sudo chmod g+s /home/test
-  - sudo echo $USER ALL=(ALL) NOPASSWD:ALL >> /etc/sudoers
+  - sudo echo "test ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
 
 script:
   - ansible-playbook tests/main.yml -i tests/hosts --syntax-check
-  - ansible-playbook tests/main.yml -i tests/hosts --connection=local --sudo
+  - ansible-playbook tests/main.yml -i tests/hosts --connection=local
   - >
-    ansible-playbook tests/main.yml -i tests/hosts --connection=local --sudo
+    ansible-playbook tests/main.yml -i tests/hosts --connection=local
     | grep -q 'changed=0.*failed=0' && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)
-  - su - test -c 'pyenv versions'
-  - su - test -c 'pyenv global'
+  - sudo su - test -c 'whoami'
+  - sudo su - test -c 'which pyenv'
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
