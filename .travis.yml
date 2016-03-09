@@ -1,25 +1,32 @@
 language: python
-python: 2.7
-sudo: false
-env:
-  global:
-  - USER=test
-  - HOME=/home/test
+python:
+  - "2.7"
+
+sudo: required
+
 addons:
   apt:
     packages:
-    - python-pip
+      - python-pip
+
 install:
-- pip install ansible
-- ansible --version
-- printf '[defaults]\nroles_path=../' >ansible.cfg
+  - pip install ansible
+  - ansible --version
+  - printf '[defaults]\nroles_path=../' >ansible.cfg
+  - sudo useradd test -m -d /home/test -s /bin/bash
+  - sudo chgrp ```id -gn``` /home/test
+  - sudo chmod g+s /home/test
+  - sudo echo $USER ALL=(ALL) NOPASSWD:ALL >> /etc/sudoers
+
 script:
-- ansible-playbook tests/main.yml -i tests/hosts --syntax-check
-- ansible-playbook tests/main.yml -i tests/hosts --connection=local --sudo
-- |
-  ansible-playbook tests/main.yml -i tests/hosts --connection=local --sudo | grep -q 'changed=0.*failed=0' && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)
-- pyenv versions
-- pyenv global
+  - ansible-playbook tests/main.yml -i tests/hosts --syntax-check
+  - ansible-playbook tests/main.yml -i tests/hosts --connection=local --sudo
+  - >
+    ansible-playbook tests/main.yml -i tests/hosts --connection=local --sudo
+    | grep -q 'changed=0.*failed=0' && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)
+  - su - test -c 'pyenv versions'
+  - su - test -c 'pyenv global'
+
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
   slack:
