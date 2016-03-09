@@ -1,7 +1,6 @@
 ---
 - name: create a local temp directory
-  local_action:
-    command: mktemp -d "{{ lookup('env', 'TMPDIR') | default('/tmp', true) }}/ansible"
+  command: mktemp -d "{{ lookup('env', 'TMPDIR') | default('/tmp', true) }}/ansible"
 
 - name: download pyenv-install.sh
   get_url:
