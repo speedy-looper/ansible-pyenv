@@ -1,41 +1,26 @@
----
 language: python
 python: 2.7
-
 sudo: false
-
 env:
   global:
-    - USER=test
-    - HOME=/home/test
-
+  - USER=test
+  - HOME=/home/test
 addons:
   apt:
     packages:
     - python-pip
-
 install:
-  # Install ansible
-  - pip install ansible
-
-  # Check ansible version
-  - ansible --version
-
-  # Create ansible.cfg with correct roles_path
-  - printf '[defaults]\nroles_path=../' >ansible.cfg
-
+- pip install ansible
+- ansible --version
+- printf '[defaults]\nroles_path=../' >ansible.cfg
 script:
-  # Basic role syntax check
-  - ansible-playbook tests/main.yml -i tests/hosts --syntax-check
-  - ansible-playbook tests/main.yml -i tests/hosts --connection=local --sudo
-  - >
-    ansible-playbook tests/main.yml -i tests/hosts --connection=local --sudo
-    | grep -q 'changed=0.*failed=0'
-    && (echo 'Idempotence test: pass' && exit 0)
-    || (echo 'Idempotence test: fail' && exit 1)
-  - pyenv versions
-  - pyenv global
-
+- ansible-playbook tests/main.yml -i tests/hosts --syntax-check
+- ansible-playbook tests/main.yml -i tests/hosts --connection=local --sudo
+- |
+  ansible-playbook tests/main.yml -i tests/hosts --connection=local --sudo | grep -q 'changed=0.*failed=0' && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)
+- pyenv versions
+- pyenv global
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
-  slack: speedy-looper:RHmUFWewVmn799VxzueUMvWd
+  slack:
+    secure: JMY55lydSLyPAOtQUeR091svEjZ/AVanCZkx6kW4QPN3pdjeId0ICTIuImE88WsaLliBub1HVINiK2o4v2TWi8jGVoHRzGxFLbSt7L8Mo6E0xZOu3bWiuleSzbLjeS3KyleBordFO+FY5nOLvNBiK8KCYIvYZZITkZ7vczbYww3feOGrgzdeela6nIX1V16/F2CsNR/xHrwEIAydeqlIcszg52N7WI356Z5jZr9jSpo/5ko/On9rwdbO5vtHBBHIGrqgf0FaHgUM/ekkZ+Y5DT1EJrZ9Sp0POxLbuXj+8aiyBw6X7KkarAMnYEm6+Bl5JJ+4tmMK0FUMRyjpa90eek4mWGDzf8Bu0SEbHP2x0Vlf+3YwcjcGnlkgFkHDB/w3EYuHo9sZAUJEnzVQthmvnY6s7zzGZbXBlP5I4sOzfqW7gU5/FepPtF/mv3KmEaBHAHA/Tnil5C3TO581wKMMUerBanHm+XrEUH40Q8EkClqWhhrfrWhIZBJQBTftfDSPkZwKz/Sh88Rs/NklB+aafFiZHKFGXuh605QJwqFlZLQVZZkECYRKmqTZN0r//f/I7eYKkoDXIXBlKDWFWYXjVxv0gKqbKIJ0fbwk1TD2o/OJopsUaUPYXfhd5bY4aEXqBaTECUDtCtmz7LhODTD/nPC8S9PtPXdcCckRtXSqXZM=
