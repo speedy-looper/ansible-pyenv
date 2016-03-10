@@ -8,26 +8,29 @@
 - name: run the installer
   script: /home/test/pyenv.sh
 
-- name: debug
-  shell: cat ~/.bash_profile
-  args:
-    executable: /bin/bash
+- name: ensure bash_profile
+  shell: touch ~/.bash_profile
 
-- name: debug
-  shell: echo `pwd` `whoami`
-  args:
-    executable: /bin/bash
+- name: update PATH
+  lineinfile:
+    dest=~/.bash_profile
+    line='export PATH="$HOME/.pyenv/bin:$PATH"'
+
+- name: init pyenv with bash
+  lineinfile:
+    dest=~/.bash_profile
+    line='eval "$(pyenv init -)"'
 
 - name: pyenv update
-  shell: pyenv update
+  shell: . ~/.bash_profile && pyenv update
   args:
     executable: /bin/bash
 
 - name: install python versions
-  shell: pyenv install {{ item }}
+  shell: . ~/.bash_profile && pyenv install {{ item }}
   args:
     executable: /bin/bash
   with_items: "{{ python.versions }}"
 
 - name: set global python
-  command: pyenv global {{ python.default }}
+  shell: . ~/.bash_profile && pyenv global {{ python.default }}

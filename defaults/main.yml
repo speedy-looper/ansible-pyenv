@@ -1,7 +1,6 @@
 ---
 python:
-  default:
-    - 2.7.10
+  default: 2.7.10
   versions:
     - 2.7.10
     - 3.4.1

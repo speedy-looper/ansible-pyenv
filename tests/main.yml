@@ -3,6 +3,5 @@
   remote_user: test
   become: yes
   become_user: test
-  become_method: sudo
   roles:
     - ansible-pyenv
