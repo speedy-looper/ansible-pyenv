@@ -1,15 +1,29 @@
 ---
+- name: ensure bash_profile
+  shell: touch ~/.bash_profile
+  changed_when: False
+  always_run: yes
+
+- name: check if pyenv in PATH
+  shell: . ~/.bash_profile && echo $PATH
+  args:
+    executable: /bin/bash
+  register: paths
+  changed_when: False
+  always_run: yes
+
+- debug: var=paths
+
 - name: download pyenv-install.sh
   get_url:
     url=https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer
     dest=/home/test/pyenv.sh
     mode=0744
+  when: "'pyenv' not in paths.stdout"
 
 - name: run the installer
   script: /home/test/pyenv.sh
-
-- name: ensure bash_profile
-  shell: touch ~/.bash_profile
+  when: "'pyenv' not in paths.stdout"
 
 - name: update PATH
   lineinfile:
@@ -25,6 +39,7 @@
   shell: . ~/.bash_profile && pyenv update
   args:
     executable: /bin/bash
+  when: "'pyenv' not in paths.stdout"
 
 - name: install python versions
   shell: . ~/.bash_profile && pyenv install {{ item }}
