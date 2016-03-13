@@ -21,6 +21,7 @@ install:
 script:
   - ansible-playbook tests/main.yml -i tests/hosts --syntax-check
   - ansible-playbook tests/main.yml -i tests/hosts -u test --connection=local
+  - ansible-playbook tests/main.yml -i tests/hosts -u test --connection=local
   - >
     ansible-playbook tests/main.yml -i tests/hosts -u test --connection=local
     | grep -q 'changed=0.*failed=0' && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)
