@@ -12,8 +12,6 @@
   changed_when: False
   always_run: yes
 
-- debug: var=paths
-
 - name: download pyenv-install.sh
   get_url:
     url=https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer
@@ -42,7 +40,7 @@
   when: "'pyenv' not in paths.stdout"
 
 - name: install python versions
-  shell: . ~/.bash_profile && pyenv install {{ item }}
+  shell: . ~/.bash_profile && echo no | pyenv install {{ item }}
   args:
     executable: /bin/bash
   with_items: "{{ python.versions }}"
