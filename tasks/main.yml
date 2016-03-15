@@ -44,6 +44,7 @@
   args:
     executable: /bin/bash
   with_items: "{{ python.versions }}"
+  ignore_errors: True
 
 - name: set global python
   shell: . ~/.bash_profile && pyenv global {{ python.default }}
