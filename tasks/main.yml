@@ -35,16 +35,27 @@
 
 - name: pyenv update
   shell: . ~/.bash_profile && pyenv update
-  args:
-    executable: /bin/bash
   when: "'pyenv' not in paths.stdout"
 
-- name: install python versions
-  shell: . ~/.bash_profile && echo no | pyenv install {{ item }}
-  args:
-    executable: /bin/bash
+- name: check python versions
+  shell: . ~/.bash_profile && pyenv versions | grep {{ item }}
   with_items: "{{ python.versions }}"
-  ignore_errors: True
+  register: versions_available
+  ignore_errors: yes
+  changed_when: False
+  always_run: yes
+
+- name: install python versions
+  shell: . ~/.bash_profile && pyenv install {{ item.item }}
+  with_items: "{{ versions_available.results }}"
+  when: "{{ item.rc == 1 }}"
 
 - name: set global python
   shell: . ~/.bash_profile && pyenv global {{ python.default }}
+  changed_when: False
+  always_run: yes
+
+- name: rehash
+  shell: . ~/.bash_profile && pyenv rehash
+  changed_when: False
+  always_run: yes
