@@ -1,4 +1,7 @@
 ---
+- name: system lib support
+  apt: name=build-essential update_cache=yes
+
 - name: ensure bash_profile
   file:
     path=~/.bash_profile
