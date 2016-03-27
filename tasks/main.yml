@@ -28,6 +28,11 @@
   changed_when: False
   always_run: yes
 
+- shell: whoami
+  register: debuginfo
+
+- debug: var={{ debuginfo }}
+
 - name: download pyenv-install.sh
   get_url:
     url=https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer
