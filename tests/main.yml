@@ -1,7 +1,5 @@
 ---
 - hosts: localhost
   remote_user: test
-  become: yes
-  become_user: test
   roles:
     - ansible-pyenv

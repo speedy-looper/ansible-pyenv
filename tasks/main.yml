@@ -1,7 +1,7 @@
 ---
 - name: install required libs for build python
   become: yes
-  apt: name=item update_cache=yes
+  apt: name={{item}} update_cache=yes
   with_items:
     - build-essential
     - libreadline-gplv2-dev
