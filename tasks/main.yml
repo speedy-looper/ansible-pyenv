@@ -1,7 +1,17 @@
 ---
-- name: system lib support
+- name: install required libs for build python
   become: yes
-  apt: name=build-essential update_cache=yes
+  apt: name=item update_cache=yes
+  with_items:
+    - build-essential
+    - libreadline-gplv2-dev
+    - libncursesw5-dev
+    - libssl-dev
+    - libsqlite3-dev
+    - tk-dev
+    - libgdbm-dev
+    - libc6-dev
+    - libbz2-dev
 
 - name: ensure bash_profile
   file:
