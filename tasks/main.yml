@@ -1,7 +1,7 @@
 ---
 - name: install required libs for build python
   become: yes
-  apt: name={{item}} update_cache=yes
+  apt: name={{ item }} update_cache=yes
   with_items:
     - build-essential
     - libreadline-gplv2-dev
@@ -55,7 +55,7 @@
 
 - name: check python versions
   shell: . ~/.bash_profile && pyenv versions | grep {{ item }}
-  with_items: "{{ python.versions }}"
+  with_items: python.versions
   register: versions_available
   ignore_errors: yes
   changed_when: False
@@ -63,7 +63,7 @@
 
 - name: install python versions
   shell: . ~/.bash_profile && pyenv install {{ item.item }}
-  with_items: "{{ versions_available.results }}"
+  with_items: versions_available.results
   when: "{{ item.rc == 1 }}"
 
 - name: set global python
