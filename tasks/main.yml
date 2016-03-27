@@ -1,6 +1,8 @@
 ---
 - name: ensure bash_profile
-  shell: touch ~/.bash_profile
+  file:
+    path=~/.bash_profile
+    state=touch
   changed_when: False
   always_run: yes
 
@@ -20,7 +22,7 @@
   when: "'pyenv' not in paths.stdout"
 
 - name: run the installer
-  script: /home/{{python.user}}/pyenv.sh
+  command: /home/{{python.user}}/pyenv.sh
   when: "'pyenv' not in paths.stdout"
 
 - name: update PATH
