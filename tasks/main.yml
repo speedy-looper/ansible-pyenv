@@ -1,6 +1,9 @@
 ---
+- name: update apt-get
+  apt: update_cache=yes
+
 - name: system lib support
-  apt: name=build-essential update_cache=yes
+  apt: name=build-essential
 
 - name: ensure bash_profile
   file:
