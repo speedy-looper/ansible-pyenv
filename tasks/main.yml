@@ -15,12 +15,12 @@
 - name: download pyenv-install.sh
   get_url:
     url=https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer
-    dest=/home/test/pyenv.sh
+    dest=/home/{{python.user}}/pyenv.sh
     mode=0744
   when: "'pyenv' not in paths.stdout"
 
 - name: run the installer
-  script: /home/test/pyenv.sh
+  script: /home/{{python.user}}/pyenv.sh
   when: "'pyenv' not in paths.stdout"
 
 - name: update PATH

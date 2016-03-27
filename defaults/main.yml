@@ -1,5 +1,6 @@
 ---
 python:
+  user: test
   default: 2.7.10
   versions:
     - 2.7.10
