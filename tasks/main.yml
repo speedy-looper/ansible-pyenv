@@ -1,7 +1,8 @@
 ---
 - name: install required libs for build python
-  become: yes
   apt: name={{ item }} update_cache=yes
+  become: yes
+  become_user: root
   with_items:
     - build-essential
     - libreadline-gplv2-dev
@@ -21,17 +22,13 @@
   always_run: yes
 
 - name: check if pyenv in PATH
+  become: yes
   shell: . ~/.bash_profile && echo $PATH
   args:
     executable: /bin/bash
   register: paths
   changed_when: False
   always_run: yes
-
-- shell: whoami
-  register: debuginfo
-
-- debug: var={{ debuginfo }}
 
 - name: download pyenv-install.sh
   get_url:
@@ -41,7 +38,7 @@
   when: "'pyenv' not in paths.stdout"
 
 - name: run the installer
-  command: /home/{{python.user}}/pyenv.sh
+  command: ~/pyenv.sh
   when: "'pyenv' not in paths.stdout"
 
 - name: update PATH
